@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow: /
+
+Sitemap: https://ekshit-talbotiq.github.io/sitemap.xml

@@ -1,0 +1,6 @@
+:HL["/landing-page-previews/tasca-v1/_next/static/chunks/3iwg42j3ig-m4.css","style"]
+:HC["/",""]
+:HL["/landing-page-previews/tasca-v1/fonts/instrument-serif/instrument-serif-latin-400-normal.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+:HL["/landing-page-previews/tasca-v1/fonts/instrument-sans/instrument-sans-latin-wdth-normal.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+1:[["children",{"s":"__PAGE__","h":160}]]
+0:{"b":"Keq5mjjVvUtniaHHQTtmp","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

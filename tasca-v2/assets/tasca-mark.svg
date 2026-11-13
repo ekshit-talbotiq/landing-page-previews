@@ -1,0 +1,12 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="tasca">
+  <defs>
+    <linearGradient id="tasca-g" x1="20" y1="24" x2="78" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2E90FF"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <!-- top bar: rounded left cap, tapered pointed right end -->
+  <path fill="url(#tasca-g)" d="M34 28 L72 28 Q80 28 76 36 L66 47 Q63 50 58 50 L34 50 Q23 50 23 39 Q23 28 34 28 Z"/>
+  <!-- stem: slanted rounded upright, sharing the bar's diagonal for a forward lean -->
+  <path fill="url(#tasca-g)" d="M47 54 L61 54 L57 74 Q56 78.5 51.5 77.3 L46 75.6 Q42.4 74.6 43.5 70.4 Z"/>
+</svg>

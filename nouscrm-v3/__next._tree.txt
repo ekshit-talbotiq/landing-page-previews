@@ -1,0 +1,6 @@
+:HL["/landing-page-previews/nouscrm-v3/_next/static/chunks/1usxu8364cjb8.css","style"]
+:HC["/",""]
+:HL["/landing-page-previews/nouscrm-v3/fonts/schibsted-grotesk/schibsted-grotesk-latin-wght-normal.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+:HL["/landing-page-previews/nouscrm-v3/fonts/hanken-grotesk/hanken-grotesk-latin-wght-normal.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+1:[["children",{"s":"__PAGE__","h":160}]]
+0:{"b":"mCqe3RU2ZqLo57TFHdmqC","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
