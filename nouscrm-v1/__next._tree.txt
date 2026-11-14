@@ -3,4 +3,4 @@
 :HL["/landing-page-previews/nouscrm-v1/fonts/big-shoulders-display/big-shoulders-display-latin-wght-normal.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
 :HL["/landing-page-previews/nouscrm-v1/fonts/instrument-sans/instrument-sans-latin-wdth-normal.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
 1:[["children",{"s":"__PAGE__","h":160}]]
-0:{"b":"O2tC8tlhPjZGeg5uz_4AE","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"F9tSgdqKqiw9wky_XiTtP","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
