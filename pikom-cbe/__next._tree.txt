@@ -5,4 +5,4 @@
 :HL["/landing-page-previews/pikom-cbe/_next/static/media/bf56aec03b6c512f-s.p.2-6hkzwn24m5-.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/landing-page-previews/pikom-cbe/_next/static/media/c6a5c2fdc12da45c-s.p.17-aodiw50953.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 1:[["children",{"s":"__PAGE__","h":160}]]
-0:{"b":"qiuxtKP1vcZVw9ZXHRWPX","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"grqyNylHJ1qACEjwfW9oq","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
