@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>PIKOM events console redesign</title>
+<meta name="description" content="UI/UX overhaul proposal for the PIKOM events console: concept, references, design system and every screen before and after.">
+<meta name="theme-color" content="#0B2149">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-900:#071739;--navy-800:#0B2149;--navy-700:#13306A;--blue:#1F5FE0;--blue-700:#1747B8;--blue-100:#E3ECFE;--blue-50:#F1F5FF;--sky:#3AA0D8;
+  --canvas:#F3F6FB;--white:#fff;--line:#DDE4EF;--line-2:#C5D0E0;--text:#14213D;--text-2:#42526B;--muted:#5D6E87;
+  --green:#0D8A5F;--green-50:#E6F6EF;--amber:#B25E00;--amber-50:#FFF3E0;--red:#C9304A;--red-50:#FDECEF;--violet:#5B47C2;--violet-50:#EFECFC;--fairway:#1F7A4D;
+  --font:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --r:14px;--shadow:0 1px 2px rgba(11,33,73,.06),0 1px 1px rgba(11,33,73,.04);--shadow-lg:0 30px 60px -20px rgba(7,23,57,.45);
+  --wrap:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;font:16px/1.6 var(--font);color:var(--text);background:var(--white);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--blue)}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:20px;line-height:1;display:inline-block;vertical-align:middle;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;-webkit-font-feature-settings:'liga';font-feature-settings:'liga'}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px;border-radius:6px}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;padding:8px 12px;border-radius:8px;z-index:100}.skip:focus{left:8px}
+
+/* Top bar */
+.top{position:sticky;top:0;z-index:50;background:rgba(11,33,73,.92);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
+.top .wrap{display:flex;align-items:center;gap:24px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;white-space:nowrap}
+.brand-mark{width:28px;height:28px;border-radius:8px;background:var(--sky);display:grid;place-items:center;color:var(--navy-900)}
+.brand-mark .ms{font-size:18px;font-variation-settings:'FILL' 1,'wght' 600}
+.top nav{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{color:#C9D5EC;text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;border-radius:8px;white-space:nowrap}
+.top nav a:hover{color:#fff;background:rgba(255,255,255,.07)}
+
+/* Hero */
+.hero{background:var(--navy-800);color:#fff;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 420px at 78% 108%,rgba(58,160,216,.22),transparent 70%);pointer-events:none}
+.hero .wrap{position:relative;padding-top:88px}
+.kicker{display:inline-flex;align-items:center;gap:8px;color:#A9BBDB;font-size:14px;font-weight:600;margin:0 0 20px}
+.kicker .dot{width:8px;height:8px;border-radius:50%;background:var(--sky)}
+.hero h1{font-size:clamp(40px,6.4vw,76px);line-height:1.02;letter-spacing:-.035em;font-weight:800;margin:0;max-width:14ch}
+.hero .lede{font-size:clamp(17px,1.6vw,20px);color:#C9D5EC;max-width:58ch;margin:24px 0 0}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 28px;margin:32px 0 0;padding:0;list-style:none;color:#A9BBDB;font-size:14px}
+.hero-meta b{display:block;color:#fff;font-size:15px;font-weight:600}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent;transition:background-color .15s,border-color .15s}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-700)}
+.btn-ghost{color:#fff;border-color:rgba(255,255,255,.22)}.btn-ghost:hover{background:rgba(255,255,255,.07)}
+.hero-shot{margin:64px auto 0;max-width:1100px;position:relative}
+.frame{background:#fff;border-radius:14px 14px 0 0;box-shadow:var(--shadow-lg);overflow:hidden;border:1px solid rgba(255,255,255,.14);border-bottom:0}
+.frame-bar{height:34px;display:flex;align-items:center;gap:7px;padding:0 14px;background:#E9EEF6;border-bottom:1px solid var(--line)}
+.frame-bar i{width:10px;height:10px;border-radius:50%;background:#C5D0E0}
+.frame-bar span{margin-left:12px;font-size:12px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 10px}
+.hero-phone{position:absolute;right:-28px;bottom:-1px;width:210px;border-radius:26px 26px 0 0;border:7px solid #0E1830;border-bottom:0;overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+@media (max-width:900px){.hero-phone{display:none}}
+
+/* Sections */
+section{padding:104px 0}
+.alt{background:var(--canvas)}
+.sec-head{max-width:760px;margin-bottom:48px}
+.eyebrow{font-size:14px;font-weight:700;color:var(--blue);margin:0 0 12px}
+h2{font-size:clamp(30px,3.8vw,46px);line-height:1.08;letter-spacing:-.025em;font-weight:800;margin:0}
+.sec-head p{font-size:18px;color:var(--text-2);margin:16px 0 0;max-width:62ch}
+h3{font-size:20px;line-height:1.3;letter-spacing:-.01em;margin:0}
+
+/* Summary strip */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);overflow:hidden}
+.fact{padding:22px 24px;border-right:1px solid var(--line)}.fact:last-child{border-right:0}
+.fact b{display:block;font-size:30px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.fact span{color:var(--muted);font-size:14px}
+@media (max-width:760px){.facts{grid-template-columns:1fr 1fr}.fact:nth-child(2){border-right:0}.fact:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+
+/* Findings */
+.findings{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:start;margin-top:56px}
+.find-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.find-list li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
+.find-list .ms{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--red-50);color:var(--red)}
+.find-list b{display:block;font-size:16px}
+.find-list p{margin:2px 0 0;color:var(--text-2);font-size:15px}
+.stack{position:sticky;top:90px}
+.stack figure{margin:0;border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+.stack figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+@media (max-width:900px){.findings{grid-template-columns:1fr}.stack{position:static}}
+
+/* Concept */
+.concept{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.principles{display:grid;gap:0;margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.principles li{padding:20px 0;border-bottom:1px solid var(--line)}
+.principles p{margin:6px 0 0;color:var(--text-2);font-size:15.5px}
+.anatomy{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lg)}
+.pin{position:absolute;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#fff;background:var(--navy-800);padding:6px 10px;border-radius:999px;box-shadow:0 6px 16px rgba(7,23,57,.3);white-space:nowrap}
+.pin i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--sky);color:var(--navy-900);display:grid;place-items:center;font-size:12px;font-weight:800}
+@media (max-width:900px){.concept{grid-template-columns:1fr}.pin{font-size:11px;padding:4px 8px}}
+
+/* References */
+.refs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ref{display:flex;flex-direction:column;gap:12px;padding:24px;border:1px solid var(--line);border-radius:var(--r);background:#fff;text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s}
+.ref:hover{border-color:var(--line-2);box-shadow:0 10px 30px -14px rgba(11,33,73,.25)}
+.ref-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ref-src{font-size:13px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:6px}
+.ref-src .ms{font-size:16px}
+.ref h3{font-size:19px}
+.ref p{margin:0;color:var(--text-2);font-size:15px}
+.ref .took{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);font-size:14px;color:var(--text)}
+.ref .took b{color:var(--blue)}
+@media (max-width:960px){.refs{grid-template-columns:1fr 1fr}}@media (max-width:620px){.refs{grid-template-columns:1fr}}
+
+/* Design system */
+.ds{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;box-shadow:var(--shadow)}
+.panel h3{margin-bottom:18px}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sw{border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.sw div{height:74px}
+.sw span{display:block;padding:8px 10px;font-size:13px;line-height:1.35}
+.sw small{color:var(--muted);font-variant-numeric:tabular-nums}
+.status-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;font-size:13px;font-weight:600}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.p-g{color:var(--green);background:var(--green-50)}.p-a{color:var(--amber);background:var(--amber-50)}.p-r{color:var(--red);background:var(--red-50)}.p-b{color:var(--blue-700);background:var(--blue-100)}.p-v{color:var(--violet);background:var(--violet-50)}
+.type-scale{display:grid;gap:14px}
+.type-scale div{display:grid;grid-template-columns:86px 1fr;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.type-scale small{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
+.comp{margin-top:24px;display:grid;gap:16px}
+.mini-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.mini-stats div{padding:12px 14px;border-right:1px solid var(--line)}.mini-stats div:last-child{border-right:0}
+.mini-stats span{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted)}.mini-stats .ms{font-size:16px}
+.mini-stats b{font-size:22px;font-variant-numeric:tabular-nums}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.b{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;font-weight:600;font-size:14px;border:1px solid var(--line-2);background:#fff;color:var(--text)}
+.b .ms{font-size:18px}.b.pri{background:var(--blue);border-color:var(--blue);color:#fff}.b.ok{background:var(--green);border-color:var(--green);color:#fff}.b.out{border-color:var(--blue);color:var(--blue)}
+.rail-demo{display:flex;gap:14px;align-items:stretch}
+.rail{width:200px;background:var(--navy-800);border-radius:14px;padding:14px 10px;color:#C9D5EC;font-size:14px;flex:none}
+.rail small{display:block;color:#7489AF;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 10px 4px}
+.rail a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;color:inherit;text-decoration:none;position:relative}
+.rail a .ms{color:#8EA3C8;font-size:19px}
+.rail a.on{background:rgba(58,160,216,.16);color:#fff;font-weight:600}.rail a.on .ms{color:var(--sky);font-variation-settings:'FILL' 1,'wght' 500}
+.rail a.on::before{content:"";position:absolute;left:-10px;top:7px;bottom:7px;width:3px;border-radius:0 3px 3px 0;background:var(--sky)}
+@media (max-width:960px){.ds{grid-template-columns:1fr}.swatches{grid-template-columns:repeat(2,1fr)}.mini-stats{grid-template-columns:1fr 1fr}.mini-stats div:nth-child(2){border-right:0}.mini-stats div:nth-child(-n+2){border-bottom:1px solid var(--line)}.rail-demo{flex-direction:column}.rail{width:100%}}
+
+/* Compare */
+.cmp-wrap{display:grid;grid-template-columns:250px 1fr;gap:28px;align-items:start}
+.screens{position:sticky;top:84px;display:grid;gap:2px;max-height:calc(100vh - 110px);overflow:auto;padding-right:4px}
+.screens h4{margin:14px 10px 6px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.screens h4:first-child{margin-top:0}
+.screens button{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:14.5px;color:var(--text-2);font-weight:500}
+.screens button .ms{font-size:19px;color:var(--muted)}
+.screens button:hover{background:#fff;color:var(--text)}
+.screens button[aria-selected=true]{background:#fff;color:var(--text);font-weight:700;box-shadow:var(--shadow);outline:1px solid var(--line)}
+.screens button[aria-selected=true] .ms{color:var(--blue)}
+.screens button:focus-visible{outline:3px solid var(--sky)}
+.stage{min-width:0}
+.stage-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.stage-head h3{font-size:24px}
+.stage-head p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.seg{display:inline-flex;background:#E6ECF5;border-radius:10px;padding:3px}
+.seg button{all:unset;cursor:pointer;padding:7px 14px;border-radius:8px;font-size:14px;font-weight:600;color:var(--text-2)}
+.seg button[aria-pressed=true]{background:#fff;color:var(--text);box-shadow:var(--shadow)}
+.seg button:focus-visible{outline:3px solid var(--sky)}
+.slider{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 50px -24px rgba(7,23,57,.35);background:#fff;user-select:none;touch-action:pan-y}
+.slider img{width:100%;height:auto}
+.slider .after{position:absolute;inset:0;clip-path:inset(0 0 0 var(--pos,50%))}
+.slider .after img{width:100%}
+.handle{position:absolute;top:0;bottom:0;left:var(--pos,50%);width:2px;background:#fff;box-shadow:0 0 0 1px rgba(7,23,57,.25);transform:translateX(-1px);pointer-events:none}
+.handle::after{content:"drag";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:var(--navy-800);color:#fff;font:600 11px var(--font);display:grid;place-items:center;box-shadow:0 8px 20px rgba(7,23,57,.35)}
+.tag{position:absolute;top:12px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;pointer-events:none}
+.tag.b4{left:12px;background:rgba(20,33,61,.78);color:#fff}.tag.af{right:12px;background:var(--blue);color:#fff}
+.slider input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.slider.phone{max-width:390px;margin:0 auto;border-radius:28px;border:8px solid #0E1830}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;list-style:none;padding:0}
+.notes li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14.5px;color:var(--text-2);display:flex;gap:10px}
+.notes .ms{color:var(--green);font-size:20px;flex:none;font-variation-settings:'FILL' 1}
+@media (max-width:960px){.cmp-wrap{grid-template-columns:1fr}.screens{position:static;max-height:none;display:flex;overflow-x:auto;gap:6px;padding-bottom:6px}.screens h4{display:none}.screens button{white-space:nowrap;background:#fff;outline:1px solid var(--line)}.notes{grid-template-columns:1fr}}
+
+/* Moments */
+.moments{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
+.phone{border-radius:30px;border:8px solid #0E1830;overflow:hidden;box-shadow:0 24px 50px -24px rgba(7,23,57,.45);background:#fff}
+.moment figcaption{margin-top:14px}
+.moment figcaption b{display:block}
+.moment figcaption span{color:var(--muted);font-size:14.5px}
+.moment{margin:0}
+.wide-moments{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;margin-top:40px}
+.wide-moments .shot{border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+@media (max-width:860px){.moments{grid-template-columns:1fr;max-width:340px;margin:0 auto}.wide-moments{grid-template-columns:1fr}}
+
+/* Public */
+.public{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.public .shot{border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);max-height:760px}
+.public p{color:var(--text-2)}
+@media (max-width:860px){.public{grid-template-columns:1fr}}
+
+/* Process */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:var(--r);background:#fff;overflow:hidden;counter-reset:s}
+.steps li{padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);counter-increment:s}
+.steps li:nth-child(4n){border-right:0}.steps li:nth-last-child(-n+4){border-bottom:0}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--blue-50);color:var(--blue);font-weight:800;font-size:14px;margin-bottom:14px}
+.steps b{display:block;font-size:16px}
+.steps p{margin:6px 0 0;color:var(--text-2);font-size:14.5px}
+@media (max-width:860px){.steps{grid-template-columns:1fr 1fr}.steps li:nth-child(4n){border-right:1px solid var(--line)}.steps li:nth-child(2n){border-right:0}.steps li:nth-last-child(-n+4){border-bottom:1px solid var(--line)}.steps li:nth-last-child(-n+2){border-bottom:0}}
+
+/* Reviewer */
+.review{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.checks li{display:grid;grid-template-columns:24px 1fr;gap:12px;font-size:15.5px;color:var(--text-2)}
+.checks .ms{font-size:22px}
+.checks b{color:var(--text)}
+.g .ms{color:var(--green);font-variation-settings:'FILL' 1}.a .ms{color:var(--amber)}.r .ms{color:var(--red)}
+pre{background:var(--navy-900);color:#DCE6F7;border-radius:12px;padding:16px 18px;font-size:13px;line-height:1.6;overflow-x:auto;margin:16px 0 0}
+@media (max-width:860px){.review{grid-template-columns:1fr}}
+
+footer{background:var(--navy-900);color:#A9BBDB;padding:48px 0;font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
+footer b{color:#fff}
+</style>
+</head>
+<body>
+<a class="skip" href="#compare">Skip to the screens</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="brand-mark"><span class="ms">event_available</span></span>PIKOM console redesign</a>
+    <nav aria-label="Sections">
+      <a href="#findings">What we found</a><a href="#concept">Concept</a><a href="#references">References</a><a href="#system">Design system</a><a href="#compare">Before and after</a><a href="#review">For the reviewer</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero" style="padding-bottom:0">
+  <div class="wrap">
+    <p class="kicker"><span class="dot"></span>UI/UX overhaul proposal, for review</p>
+    <h1>The PIKOM events console, redesigned.</h1>
+    <p class="lede">Same features and the same workflows, in a calmer, clearer interface. Every screen staff and registrants use, from campaign setup to the check-in scanner, moved onto one blue-and-white design system.</p>
+    <ul class="hero-meta">
+      <li><b>Prepared by</b>Talbot IQ</li>
+      <li><b>Date</b>25 November 2026</li>
+      <li><b>Status</b>Awaiting review, not deployed</li>
+    </ul>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#compare"><span class="ms">compare</span>Compare every screen</a>
+      <a class="btn btn-ghost" href="#review">What to check</a>
+    </div>
+    <div class="hero-shot">
+      <div class="frame"><div class="frame-bar"><i></i><i></i><i></i><span>Registrations · Summit Registration</span></div>
+        <img src="img/survey_submission_list-after-d.jpg" alt="Redesigned registrations workspace: navy sidebar, page header, counters bar and registrants table" width="1200" height="750"></div>
+      <div class="hero-phone"><img src="img/golf_public-after-m.jpg" alt="Redesigned golf registration form on a phone" width="390" height="844"></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:56px 0 0">
+  <div class="wrap">
+    <div class="facts">
+      <div class="fact"><b>30</b><span>screens redesigned</span></div>
+      <div class="fact"><b>2</b><span>widths checked: 1440 px and 390 px</span></div>
+      <div class="fact"><b>0</b><span>changes to server code or data</span></div>
+      <div class="fact"><b>1</b><span>shared design system for all of it</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="findings">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">What we found</p>
+      <h2>A capable tool that looked like three different products.</h2>
+      <p>The console does a lot: campaigns, form building, approvals, QR emails, walk-ins, badges, golf flights and sponsorship. The interface had grown screen by screen, so every page solved layout differently.</p>
+    </div>
+    <div class="findings">
+      <ul class="find-list">
+        <li><span class="ms">palette</span><div><b>No consistent colour</b><p>Purple sign-in, light-blue gradients in the menu, green, grey and violet buttons side by side. Colour carried no meaning.</p></div></li>
+        <li><span class="ms">scatter_plot</span><div><b>Key numbers were hard to read</b><p>Totals, pending, approved, QR sent and check-ins floated in the corner as small icon-and-number pairs.</p></div></li>
+        <li><span class="ms">sentiment_neutral</span><div><b>Emoji and mixed icon sets</b><p>Public pages used emoji for date and venue; admin pages mixed three icon families.</p></div></li>
+        <li><span class="ms">smartphone</span><div><b>Weak on phones</b><p>Toolbars and tables spilled sideways, and the scanner page gave no clear signal at the door.</p></div></li>
+        <li><span class="ms">visibility_off</span><div><b>Small things that cost time</b><p>An invisible close button on dialogs, form fields drawn as a single faint line, ALL-CAPS labels and title-case buttons.</p></div></li>
+      </ul>
+      <div class="stack">
+        <figure><img src="img/survey_submission_list-before-d.jpg" alt="Original registrations page" loading="lazy" width="1200" height="750"></figure>
+        <p style="font-size:13px;color:var(--muted);margin:8px 0 0">The registrations page before the overhaul.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="concept" class="alt">
+  <div class="wrap">
+    <div class="concept">
+      <div>
+        <p class="eyebrow">Concept</p>
+        <h2>Command rail, white canvas.</h2>
+        <p style="font-size:18px;color:var(--text-2);margin:16px 0 28px">A deep navy rail holds everything you can go to. The page itself stays white and quiet, so the registrants, numbers and decisions are what you see. PIKOM blue marks the one action that matters on each screen; the sky blue from the PIKOM logo marks where you are.</p>
+        <ul class="principles">
+          <li><h3>Colour means something</h3><p>Blue is for action. Green, amber and red only ever mean approved, pending and rejected. Golf screens carry one small fairway-green mark, nothing more.</p></li>
+          <li><h3>Every page reads the same way</h3><p>Breadcrumb, title, one line on what the page is for, the main action on the right. Then a single bar of numbers, then the work.</p></li>
+          <li><h3>Built for the event floor too</h3><p>Phones get a slide-out menu, pinned submit bars and a scanner that answers in one glance: checked in, already in, or do not admit.</p></li>
+          <li><h3>Each event keeps its own colour</h3><p>Public forms and emails still take each campaign's theme colour. The console's own brand never overrides it.</p></li>
+        </ul>
+      </div>
+      <figure class="anatomy" style="margin:0">
+        <img src="img/campaign_dashboard-after-d.jpg" alt="Campaign dashboard after the redesign" loading="lazy" width="1200" height="750">
+        <span class="pin" style="left:3%;top:18%"><i>1</i>Navy rail, grouped</span>
+        <span class="pin" style="left:24%;top:3%"><i>2</i>Breadcrumb and title</span>
+        <span class="pin" style="right:3%;top:13%"><i>3</i>One main action</span>
+        <span class="pin" style="left:30%;top:28%"><i>4</i>Numbers in one bar</span>
+        <span class="pin" style="left:50%;top:58%"><i>5</i>Charts in the system palette</span>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="references">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">References</p>
+      <h2>What the best event and SaaS products do well.</h2>
+      <p>We studied premium Framer templates for events and SaaS, and the products people hold up as the standard for calm, dense software. Nothing was copied; each one taught a specific pattern.</p>
+    </div>
+    <div class="refs">
+      <a class="ref" href="https://www.framer.com/community/marketplace/templates/convene/" target="_blank" rel="noopener">
+        <div class="ref-top"><span class="ref-src"><span class="ms">web</span>Framer template</span><span class="ms" aria-hidden="true">north_east</span></div>
+        <h3>Convene</h3><p>Conference template that leads with event meta (date, time, format) and ends in a registration form.</p>
+        <p class="took"><b>We took:</b> event details as a scannable panel before the questions on public forms.</p>
+      </a>
+      <a class="ref" href="https://www.framer.com/marketplace/templates/latent27/" target="_blank" rel="noopener">
+        <div class="ref-top"><span class="ref-src"><span class="ms">web</span>Framer template</span><span class="ms" aria-hidden="true">north_east</span></div>
+        <h3>Latent27</h3><p>Conference template whose register page designs the loading, success and error states, not just the empty form.</p>
+        <p class="took"><b>We took:</b> per-question error messages and a confident thank-you page with the reference number.</p>
+      </a>
+      <a class="ref" href="https://www.framer.com/marketplace/templates/eventr/" target="_blank" rel="noopener">
+        <div class="ref-top"><span class="ref-src"><span class="ms">web</span>Framer template</span><span class="ms" aria-hidden="true">north_east</span></div>
+        <h3>Eventr</h3><p>Event template built around clear ticket cards with a single action each.</p>
+        <p class="took"><b>We took:</b> golf sponsorship packages as selectable cards with price, state and "sold out".</p>
+      </a>
+      <a class="ref" href="https://www.framer.com/marketplace/templates/alytics/" target="_blank" rel="noopener">
+        <div class="ref-top"><span class="ref-src"><span class="ms">web</span>Framer template</span><span class="ms" aria-hidden="true">north_east</span></div>
+        <h3>Alytics</h3><p>SaaS template that presents analytics and reports as clean product panels.</p>
+        <p class="took"><b>We took:</b> the campaign dashboard as a report: funnel, timeline and status in calm cards.</p>
+      </a>
+      <a class="ref" href="https://linear.app" target="_blank" rel="noopener">
+        <div class="ref-top"><span class="ref-src"><span class="ms">apps</span>Product</span><span class="ms" aria-hidden="true">north_east</span></div>
+        <h3>Linear</h3><p>The reference for quiet, dense work software: a dark navigation rail, restrained colour, sentence-case labels.</p>
+        <p class="took"><b>We took:</b> the navy rail with grouped sections and a single accent for "you are here".</p>
+      </a>
+      <a class="ref" href="https://lu.ma" target="_blank" rel="noopener">
+        <div class="ref-top"><span class="ref-src"><span class="ms">event</span>Product</span><span class="ms" aria-hidden="true">north_east</span></div>
+        <h3>Luma</h3><p>Event pages that put the banner, date and place first and keep registration short and friendly.</p>
+        <p class="took"><b>We took:</b> banner-first public forms that keep each event's own colour.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="system" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Design system</p>
+      <h2>Blue and white, with colours that earn their place.</h2>
+      <p>One stylesheet now restyles every admin page and the shared parts of the public pages: colours, type, buttons, forms, tables, dialogs, menus, date pickers, editors and alerts.</p>
+    </div>
+    <div class="ds">
+      <div class="panel">
+        <h3>Colour</h3>
+        <div class="swatches">
+          <div class="sw"><div style="background:#0B2149"></div><span>Rail navy<br><small>#0B2149</small></span></div>
+          <div class="sw"><div style="background:#1F5FE0"></div><span>PIKOM blue<br><small>#1F5FE0</small></span></div>
+          <div class="sw"><div style="background:#3AA0D8"></div><span>Logo sky<br><small>#3AA0D8</small></span></div>
+          <div class="sw"><div style="background:#F3F6FB"></div><span>Canvas<br><small>#F3F6FB</small></span></div>
+          <div class="sw"><div style="background:#0D8A5F"></div><span>Approved<br><small>#0D8A5F</small></span></div>
+          <div class="sw"><div style="background:#B25E00"></div><span>Pending<br><small>#B25E00</small></span></div>
+          <div class="sw"><div style="background:#C9304A"></div><span>Rejected<br><small>#C9304A</small></span></div>
+          <div class="sw"><div style="background:#1F7A4D"></div><span>Golf mark<br><small>#1F7A4D</small></span></div>
+        </div>
+        <div class="status-row"><span class="pill p-g">Approved</span><span class="pill p-a">Pending</span><span class="pill p-r">Rejected</span><span class="pill p-b">Staff</span><span class="pill p-v">Superuser</span></div>
+        <div class="comp">
+          <div class="mini-stats" aria-label="Counter bar example">
+            <div><span><span class="ms" style="color:var(--blue)">group</span>Total</span><b>26</b></div>
+            <div><span><span class="ms" style="color:var(--amber)">hourglass_top</span>Pending</span><b>9</b></div>
+            <div><span><span class="ms" style="color:var(--green)">verified</span>Approved</span><b>11</b></div>
+            <div><span><span class="ms" style="color:#0B7F8C">how_to_reg</span>Checked in</span><b>4</b></div>
+          </div>
+          <div class="btns"><span class="b pri"><span class="ms">person_add</span>Register walk-in</span><span class="b out"><span class="ms">send</span>Send</span><span class="b"><span class="ms">visibility</span>Preview form</span><span class="b ok"><span class="ms">verified</span>Approve</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Type: Figtree, one family</h3>
+        <div class="type-scale">
+          <div><small>Page title<br>28 / 800</small><span style="font-size:28px;font-weight:800;letter-spacing:-.015em">Summit Registration</span></div>
+          <div><small>Section<br>17 / 700</small><span style="font-size:17px;font-weight:700">Respondent details</span></div>
+          <div><small>Body<br>15 / 400</small><span style="font-size:15px">Approved delegates can receive their QR email.</span></div>
+          <div><small>Label<br>13 / 600</small><span style="font-size:13px;font-weight:600;color:var(--text-2)">Participant type</span></div>
+        </div>
+        <h3 style="margin:26px 0 14px">Navigation rail</h3>
+        <div class="rail-demo">
+          <div class="rail" aria-hidden="true">
+            <small>Events</small>
+            <a><span class="ms">campaign</span>Campaigns</a>
+            <a class="on"><span class="ms">assignment</span>Registration forms</a>
+            <a><span class="ms">rate_review</span>Post-event surveys</a>
+            <small>Golf</small>
+            <a><span class="ms">golf_course</span>Golf events</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Before and after</p>
+      <h2>Every screen, side by side.</h2>
+      <p>Pick a screen, then drag across the image to compare. Switch to phone to see the 390 px version. Screens use made-up demo data.</p>
+    </div>
+    <div class="cmp-wrap">
+      <div class="screens" role="tablist" aria-label="Screens" id="screens"></div>
+      <div class="stage">
+        <div class="stage-head">
+          <div><h3 id="sTitle"></h3><p id="sPath"></p></div>
+          <div class="seg" role="group" aria-label="Device"><button type="button" id="vD" aria-pressed="true">Desktop</button><button type="button" id="vM" aria-pressed="false">Phone</button></div>
+        </div>
+        <div class="slider" id="slider" style="--pos:50%">
+          <img id="imgB" alt="" width="1200" height="750">
+          <div class="after"><img id="imgA" alt="" width="1200" height="750"></div>
+          <div class="handle"></div>
+          <span class="tag b4">Before</span><span class="tag af">After</span>
+          <input type="range" min="0" max="100" value="50" id="pos" aria-label="Drag to compare before and after">
+        </div>
+        <ul class="notes" id="notes"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Moments that matter</p>
+      <h2>The check-in scanner answers in one glance.</h2>
+      <p>At the door, staff hold a phone or a handheld scanner. Each scan now fills the screen with one clear state and a big "Next scan" button.</p>
+    </div>
+    <div class="moments">
+      <figure class="moment"><div class="phone"><img src="img/scan-ok-m.jpg" alt="Scanner showing Checked in in green" loading="lazy"></div><figcaption><b>Checked in</b><span>Approved and admitted.</span></figcaption></figure>
+      <figure class="moment"><div class="phone"><img src="img/scan-exist-m.jpg" alt="Scanner showing Already checked in in amber" loading="lazy"></div><figcaption><b>Already checked in</b><span>Scanned before; badge can be reprinted.</span></figcaption></figure>
+      <figure class="moment"><div class="phone"><img src="img/scan-blocked-m.jpg" alt="Scanner showing Not approved in red" loading="lazy"></div><figcaption><b>Not approved</b><span>Pending or rejected: do not admit.</span></figcaption></figure>
+    </div>
+    <div class="wide-moments">
+      <figure class="moment"><div class="shot"><img src="img/walkin.jpg" alt="Register walk-in dialog" loading="lazy"></div><figcaption><b>Walk-in registration</b><span>Grouped fields and three switches for what happens next: email QR, check in, print badge.</span></figcaption></figure>
+      <figure class="moment"><div class="shot"><img src="img/email-qr.jpg" alt="QR code email" loading="lazy"></div><figcaption><b>Emails</b><span>Restyled QR, reminder, feedback and golf emails, still in each campaign's colour.</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Public pages</p>
+      <h2>Registration that feels like a premium event.</h2>
+      <p>Registrants see each event's colour, a banner hero, event details with proper icons, numbered questions and a submit bar that stays in reach on phones. Golf sponsors choose packages as cards with a live order summary.</p>
+    </div>
+    <div class="public">
+      <figure class="moment"><div class="shot"><img src="img/golf_sponsor_public-after-full.jpg" alt="Golf sponsorship form with package cards and order summary" loading="lazy"></div><figcaption><b>Golf sponsorship</b><span>Package cards, sold-out state, live total.</span></figcaption></figure>
+      <figure class="moment"><div class="shot"><img src="img/form_public-after-full.jpg" alt="Public registration form" loading="lazy"></div><figcaption><b>Event registration</b><span>Event details beside the questions on desktop, above them on phones.</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">How it was made</p>
+      <h2>An agency process, start to finish.</h2>
+      <p>The same workflow we use for client websites and landing pages, applied to a working product.</p>
+    </div>
+    <ol class="steps">
+      <li><b>Product truth</b><p>Read every model, view and template; mapped who uses each page and every flow.</p></li>
+      <li><b>Run it for real</b><p>Set the app up locally with demo data and captured all 30 screens as they were.</p></li>
+      <li><b>Research</b><p>Studied premium Framer event and SaaS templates and best-in-class products.</p></li>
+      <li><b>Concept</b><p>Command rail, white canvas; colour only where it means something.</p></li>
+      <li><b>Design system</b><p>One stylesheet: tokens, type, components and fixes for every library in use.</p></li>
+      <li><b>Build in parallel</b><p>Five page groups redesigned side by side, every script hook preserved.</p></li>
+      <li><b>Test</b><p>Opened every dialog, submitted every public form, approved, scanned, dragged and reordered at desktop and phone width.</p></li>
+      <li><b>Review</b><p>This page. Nothing is deployed until it is approved.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="review">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">For the reviewer</p>
+      <h2>What changed, and what to check.</h2>
+      <p>The work sits on a branch called <b>ui-overhaul</b> and has not been committed or deployed. Only templates and one new stylesheet changed.</p>
+    </div>
+    <div class="review">
+      <div class="panel">
+        <h3 style="margin-bottom:16px">Unchanged and changed</h3>
+        <ul class="checks">
+          <li class="g"><span class="ms">check_circle</span><span><b>No server code changed.</b> Views, models, URLs, settings and data are exactly as they were.</span></li>
+          <li class="g"><span class="ms">check_circle</span><span><b>Every script hook kept.</b> Element IDs, form field names and data attributes the scripts rely on are intact.</span></li>
+          <li class="g"><span class="ms">check_circle</span><span><b>Campaign colours kept</b> on public pages and emails.</span></li>
+          <li class="a"><span class="ms">help</span><span><b>Please confirm:</b> camera scanning on the check-in page now works (its code had been switched off).</span></li>
+          <li class="a"><span class="ms">help</span><span><b>Please confirm:</b> sign-in no longer errors when "Keep me signed in" is unticked (handled in the page).</span></li>
+          <li class="a"><span class="ms">help</span><span><b>Please confirm:</b> registrant names are now escaped before display on the scanner, registrations list and golf form.</span></li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3 style="margin-bottom:16px">Server-side notes</h3>
+        <ul class="checks">
+          <li class="a"><span class="ms">info</span><span>While reading the code we noted a few server-side issues that are outside a UI change. They are listed in a separate technical note shared privately with the development team, not on this page.</span></li>
+          <li class="g"><span class="ms">check_circle</span><span>None of them were changed as part of this overhaul, so the review can focus on the interface alone.</span></li>
+        </ul>
+        <p style="margin:18px 0 0;color:var(--text-2);font-size:15px">To review it locally:</p>
+        <pre>git checkout ui-overhaul
+python manage.py runserver</pre>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span><b>PIKOM events console</b> UI/UX overhaul proposal</span><span>Prepared by Talbot IQ, November 2026. Draft for review; screens use demo data.</span></div></footer>
+
+<script>
+const S=[
+ ['Admin','login','lock','Sign in','/login/',['Navy PIKOM panel replaces the purple stock photo','Labelled fields, show password, forgot-password beside the label','Same family for all four password-reset pages']],
+ ['Admin','campaign_list','campaign','Campaigns','/campaign_list/',['Each campaign shows its colour, form link and dates','Status as a pill; actions as labelled icon buttons and a menu','Campaign dialog grouped into Basics, Schedule, Team, Public page, Check-in']],
+ ['Admin','campaign_dashboard','monitoring','Campaign dashboard','/campaign_dashboard/1/',['Counters in one bar with context lines','Funnel with counts and percentages','Charts redrawn in the system palette, print-ready']],
+ ['Admin','registration_forms','assignment','Registration forms','/registration_forms/',['Campaign and response count under each title','Edit, build and preview up front; the rest in one menu','Delete asks clearly and warns it cannot be undone']],
+ ['Admin','form_builder','edit_note','Form builder','/form_builder/2/',['Tabs: Questions, Banner, Event details, Emails','Question cards with type, required and list-column tags','Drag handle is a real button; reorder saves']],
+ ['Admin','survey_submission_list','groups','Registrations','/survey_submission_list/2/',['Seven counters in one bar','Walk-in and preview in the header; bulk actions wait for a selection','Status pills and one consistent check icon']],
+ ['Admin','survey_answer_view','person','Registrant','/survey_answer_view/2/1/',['Vetting card with approve, reject, reset','Details grid adds QR and check-in status','Answers as a numbered list with chosen options as chips']],
+ ['Admin','users','manage_accounts','Team and access','/users/',['Avatars, role and state pills, last sign-in','Add user in the header','Dialog split into Person and Access']],
+ ['Golf','golf_events','golf_course','Golf events','/golf_events/',['Readable dates and status pills','Forms column links straight to each form','Event dialog grouped into four sections']],
+ ['Golf','golf_reg_forms','sports_golf','Player registration forms','/golf_registration_forms/',['Public path under each title','Entries and builder as icons, the rest in a menu','Sentence-case dialogs']],
+ ['Golf','golf_form_builder','tune','Golf form builder','/golf_form_builder/1/',['Sticky section list highlights where you are','Each section saves on its own with clear help text','Player fields as tidy rows with labelled switches']],
+ ['Golf','golf_sponsor_builder','handshake','Sponsorship builder','/golf_form_builder/2/',['Sponsor items as rows with price and special price','Flags as pills: once only, add-on, taken, hidden','Availability switch with a live label']],
+ ['Golf','golf_submission_list','receipt_long','Golf entries','/golf_submission_list/1/',['Entries, players, statuses and total value in one bar','Approve, reject and export in one toolbar','Detail drawer reads like a summary']],
+ ['Public','form_public','how_to_reg','Event registration','/event/…/',['Banner hero and the campaign colour drive the page','Event details with icons, not emoji','Numbered questions, tappable options, pinned submit on phones']],
+ ['Public','golf_public','sports_golf','Golf player registration','/golf/…/',['Players as numbered cards','Salutation and membership as chip buttons','Live total with a pinned bar on phones']],
+ ['Staff','scan_survey','qr_code_scanner','Check-in scanner','/scanform/…',['Big colour-coded result for every scan','56 px code box and camera button','Activity log and badge printing kept']],
+ ['Staff','user_manual','menu_book','User manual','/user_manual/',['PIKOM blue instead of pink','Readable body size and sticky contents','Content unchanged']],
+];
+const box=document.getElementById('screens'), imgA=document.getElementById('imgA'), imgB=document.getElementById('imgB'), slider=document.getElementById('slider'), pos=document.getElementById('pos');
+let cur=5, dev='d';
+let group='';
+S.forEach((s,i)=>{ if(s[0]!==group){group=s[0];const h=document.createElement('h4');h.textContent=group;box.append(h)}
+  const b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.innerHTML='<span class="ms" aria-hidden="true">'+s[2]+'</span>'+s[3];b.onclick=()=>show(i);box.append(b)});
+function show(i){cur=i;const s=S[i];
+  [...box.querySelectorAll('button')].forEach((b,j)=>b.setAttribute('aria-selected',j===i));
+  document.getElementById('sTitle').textContent=s[3];document.getElementById('sPath').textContent=s[0]+' · '+s[4];
+  imgB.src='img/'+s[1]+'-before-'+dev+'.jpg';imgA.src='img/'+s[1]+'-after-'+dev+'.jpg';
+  imgB.alt=s[3]+' before the redesign';imgA.alt=s[3]+' after the redesign';
+  slider.classList.toggle('phone',dev==='m');
+  document.getElementById('notes').innerHTML=s[5].map(t=>'<li><span class="ms" aria-hidden="true">check_circle</span>'+t+'</li>').join('');
+  setPos(50)}
+function setPos(v){pos.value=v;slider.style.setProperty('--pos',v+'%')}
+pos.addEventListener('input',e=>setPos(e.target.value));
+const vD=document.getElementById('vD'),vM=document.getElementById('vM');
+vD.onclick=()=>{dev='d';vD.setAttribute('aria-pressed','true');vM.setAttribute('aria-pressed','false');show(cur)};
+vM.onclick=()=>{dev='m';vM.setAttribute('aria-pressed','true');vD.setAttribute('aria-pressed','false');show(cur)};
+imgB.onerror=()=>{imgB.src=imgA.src};
+show(cur);
+</script>
+</body>
+</html>
