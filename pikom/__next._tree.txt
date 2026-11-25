@@ -1,6 +1,6 @@
-:HL["/landing-page-previews/pikom/_next/static/chunks/29e48nhh-u0t-.css","style"]
-:HL["/landing-page-previews/pikom/_next/static/media/4cf231d25563e07b-s.p.2874ccu1_u7jf.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/landing-page-previews/pikom/_next/static/media/d902bc2bfdd0a4cb-s.p.1g73gv09-xcb6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/landing-page-previews/pikom/_next/static/media/e63b65bb308a9351-s.p.3j3877k49yy0l.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/landing-page-previews/pikom/_next/static/chunks/2l1y4w1fz9t1j.css","style"]
+:HL["/landing-page-previews/pikom/_next/static/media/22a701959b157a82-s.p.2o7m9ogm38dql.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/landing-page-previews/pikom/_next/static/media/82450a180bcad83c-s.p.0p-wng2nn8o-p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/landing-page-previews/pikom/_next/static/media/dd9dfc3601372168-s.p.43zbiuwnnoiok.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 1:[["children",{"s":"__PAGE__","h":160}]]
-0:{"b":"qiPIAcqqP8mV1F9Yx3xsI","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"j51DdwibsKmWQweVRRVpY","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
